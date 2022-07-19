@@ -53,7 +53,7 @@ public class TaskDaoTest {
     }
 
     @Test
-    public void insertAndGetUser() throws InterruptedException {
+    public void insertAndGetProject() throws InterruptedException {
 
         // BEFORE : Adding a new project
         this.mCleanupDatabase.mProjectDao().createProject(PROJECT_DEMO);

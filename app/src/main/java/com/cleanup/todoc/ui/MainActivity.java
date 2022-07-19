@@ -40,7 +40,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     /**
      * List of all projects available in the application
      */
-    private final Project[] allProjects = Project.getAllProjects();
+ //   private final Project[] allProjects = Project.getAllProjects();
+    private Project[] allProjects;
 
     /**
      * List of all current tasks of the application
@@ -96,6 +97,8 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
     // FOR DATA
     private TaskViewModel mTaskViewModel;
 
+    private List<Project> mProjectList = new ArrayList<>();
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,6 +106,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         // VEGETO52
         configureViewModel();
         getTask();
+        getProject();
 
         setContentView(R.layout.activity_main);
 
@@ -309,7 +313,7 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
      * Sets the data of the Spinner with projects to associate to a new task
      */
     private void populateDialogSpinner() {
-        final ArrayAdapter<Project> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allProjects);
+        ArrayAdapter<Project> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, allProjects);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         if (dialogSpinner != null) {
             dialogSpinner.setAdapter(adapter);
@@ -358,5 +362,15 @@ public class MainActivity extends AppCompatActivity implements TasksAdapter.Dele
         tasks.addAll(tasksList);
 
         updateTasks();
+    }
+
+    private void getProject() {
+        this.mTaskViewModel.getAllProject().observe(this, this::updateProjectList);
+    }
+
+    private void updateProjectList(List<Project> projectList) {
+        mProjectList.clear();
+        mProjectList.addAll(projectList);
+        allProjects = mProjectList.toArray(new Project[0]);
     }
 }
